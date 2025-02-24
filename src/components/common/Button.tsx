@@ -17,9 +17,8 @@ function Button({text, onClick, type="button", width = "100%", height="3rem"}: B
 const ButtonStyle = styled.button<{ width: string , height: string}>`
   width: ${props => props.width}; 
   height: ${props => props.height};
-  margin-top: 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   background-color: #3AE159;
   color: black;
   font-size: 1rem;

@@ -104,7 +104,7 @@ const LoginStyle = styled.div`
 
       .error-message {
         color: #6969dc;
-        font-size: 0.9rem;
+        font-size: 0.8rem;
       }
     }
   }
