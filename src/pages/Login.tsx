@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import Button from "../components/common/Button";
+import { Link } from "react-router-dom";
 
 interface LoginProps {
   email: string;
@@ -53,12 +55,12 @@ function Login() {
           )}
         </div>
 
-        <button type="submit">로그인</button>
+        <Button text="로그인" type="submit" width="50%" />
       </form>
       <span className="auth-links">
         <p>비밀번호 찾기</p>
         <p>|</p>
-        <p>회원가입</p>
+        <Link to="/signup">회원가입</Link>
       </span>
     </LoginStyle>
   );
@@ -80,10 +82,12 @@ const LoginStyle = styled.div`
     display: flex;
     flex-direction: column;
     padding: 1rem;
+    align-items: center;
 
     .inputs {
       height: 4.5rem;
       margin-bottom: 1rem;
+      width: 100%;
 
       input {
         width: 100%;
@@ -112,6 +116,11 @@ const LoginStyle = styled.div`
     justify-content: space-around;
     color:#8C8C8C;
     cursor: pointer;
+
+    a {
+      text-decoration: none;
+      color:#8C8C8C;
+    }
   }
 `;
 export default Login;
