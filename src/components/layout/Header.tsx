@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { FiSend } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 
 function Header() {
+  const navigate = useNavigate();
   return (
     <HeaderStyle>
       <h1>
@@ -10,7 +12,12 @@ function Header() {
         <span style={{ color: "#3AE159" }}>Crew</span>
       </h1>
       <Icons>
-        <IoMdNotificationsOutline style={{ fontSize: "30px" }} />
+        <IoMdNotificationsOutline
+          style={{ fontSize: "30px" }}
+          onClick={() => {
+            navigate("/notification");
+          }}
+        />
         <FiSend style={{ fontSize: "30px" }} />
       </Icons>
     </HeaderStyle>
@@ -30,15 +37,16 @@ const HeaderStyle = styled.div`
 
   h1 {
     font-size: 1.6rem;
-  } 
+  }
 `;
 
-const Icons = styled.div `
+const Icons = styled.div`
   width: 25%;
   padding: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 `;
 
 export default Header;

@@ -5,12 +5,14 @@ import Home from "./pages/Home";
 import SearchEvent from "./pages/SearchEvent";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Notification from "./pages/Notification";
 
 function App() {
   const routeLists = [{ path: "/", element: <Home />, showHeader: true, showBottom: true },
   { path: "/search", element: <SearchEvent />, showHeader: true, showBottom: true },
   { path: "/login", element: <Login />, showHeader: false, showBottom: false },
-  { path: "/signup", element: <Signup />, showHeader: false, showBottom: false }
+  { path: "/signup", element: <Signup />, showHeader: false, showBottom: false },
+  { path: "/notification", element: <Notification />, showHeader: false, showBottom: false },
   ];
 
   return (
