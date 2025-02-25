@@ -18,6 +18,7 @@ interface SignupProps {
 type LocationType = {
   area: string;
   subArea: string;
+  combinedLocation?: string;
 };
 
 const exerciseList = [
@@ -62,12 +63,16 @@ function Signup() {
     defaultValues: {
       exerciseTypes: [],
       gender: "",
-      location: { area: "", subArea: "" },
     },
   });
 
   const onSubmit = (data: SignupProps) => {
-    console.log(data);
+    // location 객체에서 combinedLocation만 추출하여 새로운 객체 생성
+    const submissionData = {
+      ...data,
+      location: data.location.combinedLocation,
+    };
+    console.log(submissionData);
   };
 
   const selectedExercises = watch("exerciseTypes") || [];
@@ -199,18 +204,33 @@ function Signup() {
         <Controller
           control={control}
           name="location"
+          rules={{
+            required: "지역을 선택해주세요",
+            validate: {
+              hasArea: (value) => !!value.area || "지역을 선택해주세요",
+              hasSubArea: (value) =>
+                !!value.subArea || "시,군,구를 선택해주세요",
+            },
+          }}
           render={({ field }) => {
             // field.value를 LocationType으로 타입 단언
             const value = field.value as LocationType;
 
             return (
-              <AreaSelect
-                selectedArea={value?.area || ""}
-                selectedSubArea={value?.subArea || ""}
-                onChange={(area: string, subArea: string) => {
-                  field.onChange({ area, subArea });
-                }}
-              />
+              <>
+                <AreaSelect
+                  selectedArea={value?.area || ""}
+                  selectedSubArea={value?.subArea || ""}
+                  onChange={(area: string, subArea: string) => {
+                    const combinedLocation =
+                      area && subArea ? `${area} ${subArea}` : "";
+                    field.onChange({ area, subArea, combinedLocation });
+                  }}
+                />
+                {errors.location && (
+                  <p className="error-message">{errors.location.message}</p>
+                )}
+              </>
             );
           }}
         />
@@ -256,9 +276,11 @@ function Signup() {
   );
 }
 const SignupStyle = styled.div`
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 
   h1 {
     font-size: 2rem;
