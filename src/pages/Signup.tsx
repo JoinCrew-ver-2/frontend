@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Button from "../components/common/Button";
 import { useEffect } from "react";
+import AreaSelect from "../components/AreaSelect";
 
 interface SignupProps {
   email: string;
@@ -9,10 +10,15 @@ interface SignupProps {
   password: string;
   nickname: string;
   gender: string;
-  location: string;
+  location: LocationType;
   exerciseTypes: string[];
   mbti?: string;
 }
+
+type LocationType = {
+  area: string;
+  subArea: string;
+};
 
 const exerciseList = [
   "축구",
@@ -50,11 +56,13 @@ function Signup() {
     formState: { errors },
     setValue,
     watch,
+    control,
   } = useForm<SignupProps>({
     mode: "onChange", // 실시간 유효성 검사 설정
     defaultValues: {
       exerciseTypes: [],
       gender: "",
+      location: { area: "", subArea: "" },
     },
   });
 
@@ -108,12 +116,7 @@ function Signup() {
               })}
               style={{ width: "75%" }}
             />
-            <Button
-              text="중복 확인"
-              type="submit"
-              width="25%"
-              height="2.5rem"
-            />
+            <Button text="중복 확인" width="25%" height="2.5rem" />
           </div>
           {errors.email && (
             <span className="error-message">{errors.email.message}</span>
@@ -129,7 +132,7 @@ function Signup() {
               })}
               style={{ width: "75%" }}
             />
-            <Button text="확인" type="submit" width="25%" height="2.5rem" />
+            <Button text="확인" width="25%" height="2.5rem" />
           </div>
           {errors.verificationCode && (
             <span className="error-message">
@@ -160,12 +163,7 @@ function Signup() {
               })}
               style={{ width: "75%" }}
             />
-            <Button
-              text="중복 확인"
-              type="submit"
-              width="25%"
-              height="2.5rem"
-            />
+            <Button text="중복 확인" width="25%" height="2.5rem" />
           </div>
           {errors.nickname && (
             <span className="error-message">{errors.nickname.message}</span>
@@ -197,6 +195,25 @@ function Signup() {
             <span className="error-message">{errors.gender.message}</span>
           )}
         </GenderContainer>
+
+        <Controller
+          control={control}
+          name="location"
+          render={({ field }) => {
+            // field.value를 LocationType으로 타입 단언
+            const value = field.value as LocationType;
+
+            return (
+              <AreaSelect
+                selectedArea={value?.area || ""}
+                selectedSubArea={value?.subArea || ""}
+                onChange={(area: string, subArea: string) => {
+                  field.onChange({ area, subArea });
+                }}
+              />
+            );
+          }}
+        />
 
         <ExerciseContainer>
           <p>관심 운동 종목을 선택해주세요</p>
@@ -250,8 +267,8 @@ const SignupStyle = styled.div`
   .error-message {
     color: #6969dc;
     font-size: 0.8rem;
-    text-align: left; 
-    align-self: flex-start; 
+    text-align: left;
+    align-self: flex-start;
   }
 
   form {
@@ -307,12 +324,11 @@ const SignupStyle = styled.div`
 `;
 
 const GenderContainer = styled.div`
-  height: 4.5rem;
+  height: 4rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  margin-top: 0.5rem;
 
   div {
     display: flex;
