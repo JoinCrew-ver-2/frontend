@@ -36,13 +36,14 @@ const Notifications = styled.div`
 
   .time {
     color: #8C8C8C;
-    width: 20%;
+    width: 25%;
     text-align: center;
   }
 `;
 
 const Notice = styled.div`
-  width: 80%;
+  width: 75%;
+  padding: 0.5rem;
   line-height: 2;
 
   .title {

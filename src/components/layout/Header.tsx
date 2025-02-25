@@ -18,7 +18,12 @@ function Header() {
             navigate("/notification");
           }}
         />
-        <FiSend style={{ fontSize: "30px" }} />
+        <FiSend
+          style={{ fontSize: "30px" }}
+          onClick={() => {
+            navigate("/chatlist");
+          }}
+        />
       </Icons>
     </HeaderStyle>
   );

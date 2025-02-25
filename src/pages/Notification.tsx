@@ -42,7 +42,7 @@ function Notification() {
 const NotificationStyle = styled.div`
   height: 100vh;
 `;
-const TopContainer = styled.div`
+export const TopContainer = styled.div`
   display: flex;
   height: 3rem;
   width: 20%;
