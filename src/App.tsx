@@ -3,6 +3,9 @@ import GlobalStyle from "./styles/global";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
 import SearchEvent from "./pages/SearchEvent";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 function App() {
   const routeLists = [{ path: "/", element: <Home />, showHeader: true, showBottom: true },
