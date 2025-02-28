@@ -8,13 +8,16 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useState } from "react";
 import OtherMessage from "../components/chat/OtherMessage";
 import MyMessage from "../components/chat/MyMessage";
+import DateSeparator from "../components/chat/DateSeparator";
+import { formatDateString, getDateOnly, getNotSeconds } from "../Utils/DateUtils";
+import { getTimeOnly } from './../Utils/DateUtils';
 
 type Message = {
   id: number;
   sender_id: string;
   nickname: string;
   content: string;
-  time: string;
+  created_at: string;
 };
 
 function Chat() {
@@ -31,92 +34,77 @@ function Chat() {
       sender_id: "abc123",
       nickname: "마이구미",
       content: "안녕하세요",
-      time: "오전 11:00",
+      created_at: "2025-02-19 14:30:00",
     },
     {
       id: 2,
       sender_id: "abc123",
       nickname: "마이구미",
       content: "반가워요 !",
-      time: "오전 11:00",
+      created_at: "2025-02-19 14:30:00",
     },
     {
       id: 3,
       sender_id: "def456",
       nickname: "아이셔",
       content: "반갑습니다",
-      time: "오전 11:05",
+      created_at: "2025-02-19 14:30:01",
     },
     {
       id: 4,
       sender_id: "def456",
       nickname: "아이셔",
       content: "하위",
-      time: "오전 11:05",
+      created_at: "2025-02-19 14:30:02",
     },
     {
       id: 5,
       sender_id: "def456",
       nickname: "아이셔",
-      content: "안녕",
-      time: "오전 11:06",
+      content: "하위",
+      created_at: "2025-02-19 14:31:02",
     },
     {
       id: 6,
-      sender_id: "f456",
-      nickname: "왕꿈틀이",
-      content: "하이",
-      time: "오전 11:05",
+      sender_id: "def456",
+      nickname: "아이셔",
+      content: "안녕",
+      created_at: "2025-02-20 14:30:00",
     },
     {
       id: 7,
       sender_id: "f456",
       nickname: "왕꿈틀이",
       content: "하이",
-      time: "오전 11:05",
-    },
-    {
-      id: 8,
-      sender_id: "f456",
-      nickname: "왕꿈틀이",
-      content: "하이",
-      time: "오전 11:05",
-    },
-    {
-      id: 9,
-      sender_id: "f456",
-      nickname: "왕꿈틀이",
-      content: "하이",
-      time: "오전 11:05",
-    },
-    {
-      id: 10,
-      sender_id: "f456",
-      nickname: "왕꿈틀이",
-      content: "하이",
-      time: "오전 11:05",
+      created_at: "2025-02-20 14:30:00",
     },
   ]);
 
-  // 메시지 전송 함수
   const sendMessage = () => {
     if (message.trim() === "") return;
-
+  
+    // 현재 날짜와 시간을 YYYY-MM-DD HH:MM:SS 형식으로 생성
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  
     const newMessage: Message = {
       id: messages.length + 1,
       sender_id: myId,
       nickname: "마이구미",
       content: message,
-      time: new Date().toLocaleTimeString("ko-KR", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      }),
+      created_at: formattedDateTime,
     };
-
+  
     setMessages([...messages, newMessage]);
     setMessage("");
   };
+  
 
   // Enter 키로 메시지 전송
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -131,52 +119,73 @@ function Chat() {
       <HeaderStyle>
         <div className="title">
           <IoIosArrowBack
-            style={{ fontSize: "2rem", cursor: "pointer" }}
+            style={{ fontSize: "1.5rem", cursor: "pointer" }}
             onClick={() => navigate("/chatlist")}
           />
           <p className="name">{title}</p>
           <p className="count">{member}</p>
         </div>
-        <RxHamburgerMenu style={{ color: "#5D5D5D", fontSize: "1.5rem" }} />
+        <RxHamburgerMenu
+          style={{ color: "#5D5D5D", fontSize: "1.5rem", cursor: "pointer" }}
+        />
       </HeaderStyle>
       <hr />
       <ChatContent>
         {messages.map((msg, index) => {
+          // 날짜 구분선 표시
+          const currentDate = getDateOnly(msg.created_at);
+          const showDateSeparator =
+            index === 0 ||
+            currentDate !== getDateOnly(messages[index - 1].created_at);
+
+          // 다음 메시지와 비교하여 시간을 표시할지 결정
+          const showTime =
+            index === messages.length - 1 ||
+            messages[index + 1].sender_id !== msg.sender_id ||
+            getNotSeconds(messages[index + 1].created_at) !== getNotSeconds(msg.created_at);
+
           if (myId != msg.sender_id) {
             // 이전 메시지와 비교하여 같은 사람이 같은 시간에 보낸 메시지인지 확인
             const showProfile =
+              showDateSeparator ||
               index === 0 ||
               messages[index - 1].sender_id !== msg.sender_id ||
-              messages[index - 1].time !== msg.time;
-
-            // 다음 메시지와 비교하여 시간을 표시할지 결정
-            const showTime =
-              index === messages.length - 1 ||
-              messages[index + 1].sender_id !== msg.sender_id ||
-              messages[index + 1].time !== msg.time;
+              getNotSeconds(messages[index - 1].created_at) !== getNotSeconds(msg.created_at);
 
             return (
-              <OtherMessage
-                key={msg.id}
-                nickname={msg.nickname}
-                content={msg.content}
-                time={msg.time}
-                showProfile={showProfile}
-                showTime={showTime}
-              />
+              <>
+                {showDateSeparator && (
+                  <DateSeparator
+                    key={`date-${index}`}
+                    date={formatDateString(msg.created_at)}
+                  />
+                )}
+                <OtherMessage
+                  key={msg.id}
+                  nickname={msg.nickname}
+                  content={msg.content}
+                  time={getTimeOnly(msg.created_at)}
+                  showProfile={showProfile}
+                  showTime={showTime}
+                />
+              </>
             );
           } else {
-            const showTime =
-              index === messages.length - 1 ||
-              messages[index + 1].sender_id !== msg.sender_id ||
-              messages[index + 1].time !== msg.time;
             return (
-              <MyMessage
-                key={msg.id}
-                content={msg.content}
-                time={msg.time}
-                showTime={showTime}
-              />
+              <>
+                {showDateSeparator && (
+                  <DateSeparator
+                    key={`date-${index}`}
+                    date={formatDateString(msg.created_at)}
+                  />
+                )}
+                <MyMessage
+                  key={msg.id}
+                  content={msg.content}
+                  time={getTimeOnly(msg.created_at)}
+                  showTime={showTime}
+                />
+              </>
             );
           }
         })}
