@@ -7,10 +7,12 @@ interface ChatCardProps {
   member: number;
   time: string;
   isHost: boolean;
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }
-function ChatCard({ title, message, member, time, isHost}: ChatCardProps) {
+
+function ChatCard({ title, message, member, time, isHost, onClick}: ChatCardProps) {
   return (
-    <ChatCardStyle>
+    <ChatCardStyle onClick={onClick}>
       <Chat>
         <div className="info">
           <p className="title">{title}</p>

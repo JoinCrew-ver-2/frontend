@@ -8,17 +8,17 @@ import ChatCard from "../components/ChatCard";
 const data = [
   {
     title: "🎾 테니스 같이 치실 분",
-    member:7,
+    member: 7,
     message: "안녕하세요",
     time: "오후 14:24",
-    isHost: true
+    isHost: true,
   },
   {
     title: "🏸 배드민턴 칠 사람 구해요",
-    member:5,
+    member: 5,
     message: "아 오늘 진짜 힘들다",
     time: "오후 13:00",
-    isHost: false
+    isHost: false,
   },
 ];
 
@@ -39,9 +39,14 @@ function ChatList() {
           key={index}
           title={item.title}
           message={item.message}
-          member ={item.member}
+          member={item.member}
           time={item.time}
           isHost={item.isHost}
+          onClick={() =>
+            navigate("/chat", {
+              state: { title: item.title, member: item.member },
+            })
+          }
         />
       ))}
     </ChatListStyle>
