@@ -1,55 +1,28 @@
 import { styled } from 'styled-components';
+import { useState } from 'react';
+import SearchBox from '../components/SearchEvent/SearchBox';
+import SearchList from '../components/SearchEvent/SearchList';
 
 function SearchEvent() {
+    const [searchValue, setSearchValue] = useState("");
+
+    const handleSearchChange = (event) => {
+        setSearchValue(event.target.value);
+    }
+
     return <SearchEventStyle>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
-        <h1>스크롤 확인을 위한 임시 페이지1</h1>
-        <h1>스크롤 확인을 위한 임시 페이지2</h1>
+        <SearchBox
+            value={searchValue}
+            onChange={handleSearchChange}
+        />
+        <SearchList />
     </SearchEventStyle>;
 }
 
 const SearchEventStyle = styled.div`
+display: flex;
+flex-direction: column;
+gap : 12px;
 `;
 
 export default SearchEvent;
