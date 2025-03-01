@@ -6,10 +6,12 @@ import SearchEvent from "./pages/SearchEvent";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import EventDetail from "./pages/EventDetail";
 
 function App() {
   const routeLists = [{ path: "/", element: <Home />, showHeader: true, showBottom: true },
-  { path: "/search", element: <SearchEvent />, showHeader: true, showBottom: true }
+  { path: "/search", element: <SearchEvent />, showHeader: true, showBottom: true },
+  { path: "/event/:id", element: <EventDetail />, showHeader: true, showBottom: false },
   ];
 
   return (
