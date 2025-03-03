@@ -11,6 +11,11 @@ import CreateEvent from "./pages/CreateEvent";
 import WriteEvent from "./pages/WriteEvent";
 import Mypage from "./pages/Mypage";
 import ModifyInfo from "./pages/ModifyInfo";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Notification from "./pages/Notification";
+import ChatList from "./pages/ChatList";
+import Chat from "./pages/Chat";
 
 function App() {
   const routeLists = [{ path: "/", element: <Home />, showHeader: true, showBottom: true },
@@ -20,6 +25,11 @@ function App() {
   { path: "/event/write", element: <WriteEvent />, showHeader: false, showBottom: false },
   { path: "/mypage", element: <Mypage />, showHeader: true, showBottom: true },
   { path: "/modify-info", element: <ModifyInfo />, showHeader: true, showBottom: false },
+  { path: "/login", element: <Login />, showHeader: false, showBottom: false },
+  { path: "/signup", element: <Signup />, showHeader: false, showBottom: false },
+  { path: "/notification", element: <Notification />, showHeader: false, showBottom: false },
+  { path: "/chatlist", element: <ChatList />, showHeader: false, showBottom: true },
+  { path: "/chat", element: <Chat />, showHeader: false, showBottom: false},
   ];
 
   return (
