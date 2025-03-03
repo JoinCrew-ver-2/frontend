@@ -24,7 +24,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow: hidden; // 전체 스크롤 방지 (Content 내부에서만 스크롤)
+  overflow: hidden;
 `;
 
 const Content = styled.main<{ showHeader: boolean; showBottom: boolean }>`
@@ -39,7 +39,7 @@ const Content = styled.main<{ showHeader: boolean; showBottom: boolean }>`
             return "100vh";
         }
     }};
-  overflow-y: scroll; /* 스크롤바를 필요할 때만 보이게 설정 */
+  overflow-y: scroll; 
 
   scrollbar-width: none; 
   scrollbar-color: transparent transparent;
