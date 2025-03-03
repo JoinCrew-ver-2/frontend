@@ -7,11 +7,15 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import EventDetail from "./pages/EventDetail";
+import CreateEvent from "./pages/CreateEvent";
+import WriteEvent from "./pages/WriteEvent";
 
 function App() {
   const routeLists = [{ path: "/", element: <Home />, showHeader: true, showBottom: true },
   { path: "/search", element: <SearchEvent />, showHeader: true, showBottom: true },
   { path: "/event/:id", element: <EventDetail />, showHeader: true, showBottom: false },
+  { path: "/event/create", element: <CreateEvent />, showHeader: true, showBottom: false },
+  { path: "/event/write", element: <WriteEvent />, showHeader: false, showBottom: false },
   ];
 
   return (
