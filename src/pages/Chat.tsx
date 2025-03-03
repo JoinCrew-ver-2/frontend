@@ -9,8 +9,13 @@ import { useState } from "react";
 import OtherMessage from "../components/chat/OtherMessage";
 import MyMessage from "../components/chat/MyMessage";
 import DateSeparator from "../components/chat/DateSeparator";
-import { formatDateString, getDateOnly, getNotSeconds } from "../Utils/DateUtils";
-import { getTimeOnly } from './../Utils/DateUtils';
+import {
+  formatDateString,
+  getDateOnly,
+  getNotSeconds,
+} from "../Utils/DateUtils";
+import { getTimeOnly } from "./../Utils/DateUtils";
+import ChatMemberList from "./ChatMemberList";
 
 type Message = {
   id: number;
@@ -24,6 +29,7 @@ function Chat() {
   const navigate = useNavigate();
   const location = useLocation();
   const [message, setMessage] = useState("");
+  const [showMemberList, setShowMemberList] = useState(false);
   const { title, member } = location.state;
 
   // 임시 데이터
@@ -82,17 +88,17 @@ function Chat() {
 
   const sendMessage = () => {
     if (message.trim() === "") return;
-  
+
     // 현재 날짜와 시간을 YYYY-MM-DD HH:MM:SS 형식으로 생성
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
     const formattedDateTime = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  
+
     const newMessage: Message = {
       id: messages.length + 1,
       sender_id: myId,
@@ -100,11 +106,10 @@ function Chat() {
       content: message,
       created_at: formattedDateTime,
     };
-  
+
     setMessages([...messages, newMessage]);
     setMessage("");
   };
-  
 
   // Enter 키로 메시지 전송
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -127,6 +132,7 @@ function Chat() {
         </div>
         <RxHamburgerMenu
           style={{ color: "#5D5D5D", fontSize: "1.5rem", cursor: "pointer" }}
+          onClick={() => setShowMemberList(!showMemberList)}
         />
       </HeaderStyle>
       <hr />
@@ -142,7 +148,8 @@ function Chat() {
           const showTime =
             index === messages.length - 1 ||
             messages[index + 1].sender_id !== msg.sender_id ||
-            getNotSeconds(messages[index + 1].created_at) !== getNotSeconds(msg.created_at);
+            getNotSeconds(messages[index + 1].created_at) !==
+              getNotSeconds(msg.created_at);
 
           if (myId != msg.sender_id) {
             // 이전 메시지와 비교하여 같은 사람이 같은 시간에 보낸 메시지인지 확인
@@ -150,7 +157,8 @@ function Chat() {
               showDateSeparator ||
               index === 0 ||
               messages[index - 1].sender_id !== msg.sender_id ||
-              getNotSeconds(messages[index - 1].created_at) !== getNotSeconds(msg.created_at);
+              getNotSeconds(messages[index - 1].created_at) !==
+                getNotSeconds(msg.created_at);
 
             return (
               <>
@@ -200,6 +208,16 @@ function Chat() {
         />
         <LuSend onClick={sendMessage} />
       </BottomStyle>
+      {showMemberList && (
+        <ChatMemberList
+          onClose={() => setShowMemberList(false)}
+          members={[
+            { id: "abc123", nickname: "마이구미", isHost: true },
+            { id: "def456", nickname: "아이셔", isHost: false },
+            { id: "f456", nickname: "왕꿈틀이", isHost: false },
+          ]}
+        />
+      )}
     </ChatStyle>
   );
 }
