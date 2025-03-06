@@ -7,7 +7,10 @@ function Header() {
   const navigate = useNavigate();
   return (
     <HeaderStyle>
-      <h1>
+      <h1
+        onClick={() => {
+          navigate("/");
+        }}>
         <span style={{ color: "#6969DC" }}>Join</span>
         <span style={{ color: "#3AE159" }}>Crew</span>
       </h1>
@@ -42,6 +45,7 @@ const HeaderStyle = styled.div`
 
   h1 {
     font-size: 1.6rem;
+    cursor: pointer;
   }
 `;
 

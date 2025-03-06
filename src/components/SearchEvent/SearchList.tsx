@@ -1,25 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
+import { EventDetailInfo } from '../../model/types';
 
-function SearchList() {
-    const events = [
-        { id: 0, title: '자전거 모임', location: '서울시 강서구', condition: '20대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 1, title: '등산 모임', location: '서울시 강남구', condition: '30대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 2, title: '축구 모임', location: '서울시 송파구', condition: '20대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 3, title: '배드민턴 모임', location: '서울시 마포구', condition: '30대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-        { id: 4, title: '야구 모임', location: '서울시 강북구', condition: '50대 성별무관', waitingMember: 3, maxMember: 8, slot: "축구", time: "오전", gender: "무관" },
-    ];
+function SearchList({ events }: { events: EventDetailInfo[] }) {
+
+    const navigate = useNavigate();
 
     return <SearchListStyle>
         <div className="event-lists">
             {events.map((event) => (
-                <div key={event.id} className="event">
+                <div key={event.id} className="event" onClick={() => navigate(`/event/${event.id}`)}>
                     <div className="event-info">
                         <div className="event-title">{event.title}</div>
                         <div className="event-detail-info">

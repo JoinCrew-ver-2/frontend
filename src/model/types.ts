@@ -13,3 +13,15 @@ export interface DropdownState {
     level: string;
     maxMember: number;
 }
+
+export interface EventDetailInfo {
+    id: number;
+    title: string;
+    location: string;
+    condition: string;
+    waitingMember: number;
+    maxMember: number;
+    slot: string;
+    time: string;
+    gender: string;
+}

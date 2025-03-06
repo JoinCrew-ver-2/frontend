@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from 'styled-components';
 import { FaSearch } from "react-icons/fa";
 import { GoTriangleDown, GoTriangleUp } from "react-icons/go";
@@ -10,46 +10,61 @@ interface filterProps {
     gender: string[];
     level: string[];
 }
+interface Area {
+    name: string;
+    subArea: string[];
+}
+interface SearchBoxProps {
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onFilterChange: (category: string, value: string) => void;
+    onResetFilters: () => void;
+    currentFilters: {
+        sport: string;
+        location: string;
+        subLocation: string;
+        gender: string;
+    };
+    areaData: Area[];
+}
 
-function SearchBox({ value, onChange }) {
+
+function SearchBox({
+    value,
+    onChange,
+    onFilterChange,
+    onResetFilters,
+    currentFilters,
+    areaData
+}: SearchBoxProps) {
     const [activeDropdown, setActiveDropdown] = useState(null);
-    const [filters, setFilters] = useState({
-        sport: "종목",
-        location: "지역",
-        gender: "성별",
-        level: "수준"
-    });
+    const [subLocations, setSubLocations] = useState<string[]>([]);
 
     const filterOptions: filterProps = {
         sport: ["축구", "농구", "러닝", "헬스", "테니스", "수영", "요가", "기타"],
-        location: ["서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산", "세종", "강원"],
         gender: ["남성", "여성", "혼성"],
-        level: ["왕초보", "초보", "중수", "고수", "전문가"]
+        location: areaData.map(area => area.name),
+        subLocation: subLocations,
     };
 
-    const toggleDropdown = (dropdownName) => {
-        if (activeDropdown === dropdownName) {
-            setActiveDropdown(null);
-        } else {
-            setActiveDropdown(dropdownName);
+    useEffect(() => {
+        // 선택된 지역에 따라 하위 지역 업데이트
+        const selectedArea = areaData.find(area => area.name === currentFilters.location);
+        setSubLocations(selectedArea ? selectedArea.subArea : []);
+    }, [currentFilters.location, areaData]);
+
+    const toggleDropdown = (dropdownName: string) => {
+        setActiveDropdown(prev => prev === dropdownName ? null : dropdownName);
+    };
+
+    const selectFilterOption = (category: string, value: string) => {
+        onFilterChange(category, value);
+
+        // 지역 선택 시 하위 지역 초기화
+        if (category === 'location') {
+            onFilterChange('subLocation', '상세지역');
         }
-    };
 
-    const selectFilterOption = (category, value) => {
-        setFilters(prev => ({
-            ...prev,
-            [category]: value
-        }));
-        setActiveDropdown(null);
-    };
-
-    const resetAllFilters = () => {
-        setFilters({
-            sport: "종목",
-            location: "지역",
-            gender: "성별",
-            level: "수준"
-        });
         setActiveDropdown(null);
     };
 
@@ -65,17 +80,17 @@ function SearchBox({ value, onChange }) {
                 <FaSearch className="search-icon" />
             </div>
             <div className="search-button">
-                <button className="refresh-button" onClick={resetAllFilters}>
+                <button className="refresh-button" onClick={onResetFilters}>
                     <RiResetRightFill />
                 </button>
 
-                {Object.keys(filters).map((category) => (
+                {Object.keys(filterOptions).map((category) => (
                     <div className="dropdown-container" key={category}>
                         <button
                             className={`choice-button ${activeDropdown === category ? 'active' : ''}`}
                             onClick={() => toggleDropdown(category)}
                         >
-                            {filters[category]}
+                            {currentFilters[category]}
                             {activeDropdown === category ? <GoTriangleUp /> : <GoTriangleDown />}
                         </button>
 
@@ -98,7 +113,6 @@ function SearchBox({ value, onChange }) {
         </SearchBoxStyle>
     );
 }
-
 const SearchBoxStyle = styled.div`
     width: 100%;
     display: flex;
@@ -143,7 +157,7 @@ const SearchBoxStyle = styled.div`
         position: relative;
 
         .refresh-button {
-            width: 15%;
+            width: 10%;
             border: 1px solid rgba(0, 0, 0, 0.3);
             border-radius: 12px;
             display: flex;
@@ -165,7 +179,7 @@ const SearchBoxStyle = styled.div`
 
         .dropdown-container {
             position: relative;
-            width: 18%;
+            width: 20%;
         }
 
         .choice-button {
@@ -175,7 +189,7 @@ const SearchBoxStyle = styled.div`
             width: 100%;
             border: 1px solid rgba(0, 0, 0, 0.3);
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 11px;
             background-color: white;
             cursor: pointer;
             padding: 8px 0;
@@ -205,6 +219,7 @@ const SearchBoxStyle = styled.div`
             z-index: 10;
             max-height: 200px;
             overflow-y: auto;
+            scrollbar-width: none;
         }
 
         .dropdown-item {
